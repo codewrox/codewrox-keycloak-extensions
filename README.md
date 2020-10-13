@@ -13,5 +13,6 @@ Copy the JAR into `/opt/jboss/keycloak/standalone/deployments/`
 - Click the newly added execution and specify the group that has access
 - On your restricted clients, set this authentication
 
+
 -----------
 Hire us for Keycloak deployments and customizations : sbwari at codewrox.com
