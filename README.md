@@ -14,5 +14,6 @@ Copy the JAR into `/opt/jboss/keycloak/standalone/deployments/`
 - On your restricted clients, set this authentication
 
 
------------
-Hire us for Keycloak deployments and customizations : sbwari at codewrox.com
+--------------------------------------------------------
+Hire us for SSO integrations,  Keycloak deployments 
+and customizations : sbwari at codewrox.com

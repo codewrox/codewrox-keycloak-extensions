@@ -11,7 +11,7 @@
 
     <modules>
 
-        <module>codewrox-keycloak-auth-validation</module>
+        <module>crox-keycloak-auth-validation</module>
 
     </modules>
 
