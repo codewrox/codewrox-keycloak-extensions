@@ -62,6 +62,7 @@
                 <version>3.1.1</version>
 
                 <configuration>
+                    <outputDirectory>/Users/senthil/all-sources/codewrox/dev/keycloak/kcwork-11.0.2/standalone/deployments</outputDirectory>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>

@@ -14,6 +14,7 @@ import java.util.List;
 public class ClientValidationAuthenticatorFactory implements AuthenticatorFactory {
 
     public static final String PROP_VALIDATION_TEMPLATE = "validation_template";
+    public static final String PROP_REDIRECT_URL = "redirect_url";
     public static final ClientValidationAuthenticator clientValidator = new ClientValidationAuthenticator();
     public static final AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES = {
             AuthenticationExecutionModel.Requirement.REQUIRED, AuthenticationExecutionModel.Requirement.DISABLED
@@ -22,7 +23,7 @@ public class ClientValidationAuthenticatorFactory implements AuthenticatorFactor
 
     @Override
     public String getDisplayType() {
-        return "Client Auth Validation";
+        return "Codewrox - Client Auth Validation";
     }
 
     @Override
@@ -61,8 +62,16 @@ public class ClientValidationAuthenticatorFactory implements AuthenticatorFactor
                 setType(ProviderConfigProperty.TEXT_TYPE);
             }
         };
+        ProviderConfigProperty redirect_url = new ProviderConfigProperty() {
+            {
+                setLabel("Redirect url");
+                setName(PROP_REDIRECT_URL);
+                setHelpText("Redirect if validation fails. Leave empty to ignore redirect");
+                setType(ProviderConfigProperty.STRING_TYPE);
+            }
+        };
 
-        return Arrays.asList(validation_template);
+        return Arrays.asList(validation_template, redirect_url);
     }
 
 
