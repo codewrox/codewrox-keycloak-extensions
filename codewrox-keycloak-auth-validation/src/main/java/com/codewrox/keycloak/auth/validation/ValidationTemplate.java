@@ -1,4 +1,4 @@
-package com.codewrox.client.validation;
+package com.codewrox.keycloak.auth.validation;
 
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;

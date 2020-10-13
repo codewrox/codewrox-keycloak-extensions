@@ -1,4 +1,4 @@
-package com.codewrox.client.validation;
+package com.codewrox.keycloak.auth.validation;
 
 import org.jboss.logging.Logger;
 import org.keycloak.authentication.AuthenticationFlowContext;

@@ -1,4 +1,4 @@
-package com.codewrox.client.validation;
+package com.codewrox.keycloak.auth.validation;
 
 import org.keycloak.Config;
 import org.keycloak.authentication.Authenticator;
