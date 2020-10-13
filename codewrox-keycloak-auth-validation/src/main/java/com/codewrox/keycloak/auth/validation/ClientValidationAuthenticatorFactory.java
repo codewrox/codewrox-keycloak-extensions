@@ -18,11 +18,11 @@ public class ClientValidationAuthenticatorFactory implements AuthenticatorFactor
     public static final AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES = {
             AuthenticationExecutionModel.Requirement.REQUIRED, AuthenticationExecutionModel.Requirement.DISABLED
     };
-    private static final String PROVIDER_ID = "cw-client-validation";
+    private static final String PROVIDER_ID = "codewrox-auth-validation";
 
     @Override
     public String getDisplayType() {
-        return "Client Auth Validations";
+        return "Client Auth Validation";
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ClientValidationAuthenticatorFactory implements AuthenticatorFactor
 
     @Override
     public String getHelpText() {
-        return "Requires the user to be a member of a given group. Note that nested group paths have the form: /parentGroup/childGroup";
+        return "Validates the template and finally it return true or false";
     }
 
     @Override
