@@ -7,10 +7,10 @@
     <parent>
         <groupId>com.codewrox.keycloak</groupId>
         <version>1.0.1-SNAPSHOT</version>
-        <artifactId>codewrox-keycloak-extensions</artifactId>
+        <artifactId>crox-keycloak-extensions</artifactId>
     </parent>
 
-    <artifactId>codewrox-keycloak-auth-validation</artifactId>
+    <artifactId>crox-keycloak-auth-validation</artifactId>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
 

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.codewrox.keycloak</groupId>
-    <artifactId>codewrox-keycloak-extensions</artifactId>
+    <artifactId>crox-keycloak-extensions</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
