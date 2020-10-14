@@ -59,6 +59,11 @@
             <name>Sontatype Snapshot Repository</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/codewrox/crox-keycloak-extensions</url>
+        </repository>
     </distributionManagement>
 
     <scm>
