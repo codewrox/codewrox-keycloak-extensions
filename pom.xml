@@ -23,18 +23,5 @@
         <keycloak.version>11.0.2</keycloak.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
- 
- 
-        </dependencies>
-    </dependencyManagement>
 
-    <build>
-        <pluginManagement>
-            <plugins>
-        
-            </plugins>
-        </pluginManagement>
-    </build>
 </project>

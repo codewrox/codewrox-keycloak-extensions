@@ -2,13 +2,18 @@ package com.codewrox.keycloak.auth.validation;
 
 
 import org.jboss.logging.Logger;
+import org.keycloak.models.GroupModel;
 import org.keycloak.models.RealmModel;
+import org.keycloak.models.RoleModel;
 import org.keycloak.models.UserModel;
+import org.keycloak.models.utils.KeycloakModelUtils;
+import org.keycloak.models.utils.RoleUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
-public class UserExtension implements KCExtension {
+public class UserExtension implements KCUserExtension {
     private static final Logger LOG = Logger.getLogger(ClientValidationAuthenticator.class);
 
     Map<String, Object> vars = new HashMap<>();
@@ -44,13 +49,27 @@ public class UserExtension implements KCExtension {
         return vars.get(k);
     }
 
-    public int add(int a, int b) {
-        return a + b;
+    public String getAttributeValue(String attributeName){
+        String attrValue = KeycloakModelUtils.resolveFirstAttribute(userModel, attributeName);
+        LOG.debugf("attr:%s , value: %s ", attributeName, attrValue);
+        return attrValue;
     }
 
-    public int mul(int a, int b) {
-        return a * b;
+    public boolean hasAttribute(String attributeName){
+        return getAttributeValue(attributeName) != null;
     }
 
+    @Override
+    public boolean hasGroup(String groupPath) {
+        GroupModel group = KeycloakModelUtils.findGroupByPath(this.realmModel, groupPath);
+        return userModel.isMemberOf(group);
+    }
+
+    @Override
+    public boolean hasRole(String roleName) {
+        RoleModel role = KeycloakModelUtils.getRoleFromString(realmModel, roleName);
+        return (RoleUtils.hasRole(userModel.getRoleMappings(), role) ||
+                RoleUtils.hasRole(RoleUtils.getDeepUserRoleMappings(userModel), role));
+    }
 
 }

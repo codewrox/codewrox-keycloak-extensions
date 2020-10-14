@@ -23,7 +23,7 @@ public class ClientValidationAuthenticator implements Authenticator {
         AuthenticatorConfigModel configModel = context.getAuthenticatorConfig();
         String template = configModel.getConfig().get(ClientValidationAuthenticatorFactory.PROP_VALIDATION_TEMPLATE);
         String redirect_url = configModel.getConfig().get(ClientValidationAuthenticatorFactory.PROP_REDIRECT_URL);
-        UserExtension userExtension = new UserExtension(context.getRealm(), context.getUser());
+        KCUserExtension userExtension = new UserExtension(context.getRealm(), context.getUser());
         AuthValidationTemplate authValidationTemplate = new AuthValidationTemplate();
         authValidationTemplate.render(template, userExtension);
         if (!userExtension.getAsBoolean("allow_access")) {
