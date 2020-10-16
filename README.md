@@ -1,14 +1,14 @@
 - [Client Auth Validation Keycloak Extension](#client-auth-validation-keycloak-extension)
 - [Understanding the template](#understanding-the-template)
 - [Available functions for validation](#available-functions-for-validation)
-  - [Attributes](#attributes)
+  - [Using attributes](#using-attributes)
     - [user.getAttributeValue](#usergetattributevalue)
     - [user.hasAttribute](#userhasattribute)
-  - [Groups](#groups)
+  - [Using groups](#using-groups)
     - [user.hasGroup](#userhasgroup)
-  - [Roles](#roles)
+  - [Using roles](#using-roles)
     - [user.hasRole](#userhasrole)
-  - [Realm Client Parameters](#realm-client-parameters)
+  - [Using realm client parameters](#using-realm-client-parameters)
     - [user.getClientId](#usergetclientid)
     - [user.getClientName](#usergetclientname)
     - [user.getClientBaseUrl](#usergetclientbaseurl)
@@ -18,8 +18,9 @@
 - [Redirect Url Template](#redirect-url-template)
 - [Installation](#installation)
   - [Configuration steps](#configuration-steps)
-    - [Step-1](#step-1)
-    - [Step-2](#step-2)
+    - [Step-1: Installation of "Codewrox - Cookie Client Auth Validation"](#step-1-installation-of-codewrox---cookie-client-auth-validation)
+    - [Step-2 Installation of "Codewrox - Client Auth Validation"](#step-2-installation-of-codewrox---client-auth-validation)
+    - [Step-3 Configuring the extenstions](#step-3-configuring-the-extenstions)
 # Client Auth Validation Keycloak Extension
 
 This extension provides you more granular control over the login flow for both SAML and OpenID clients.  Using this extension, one can restrict access to a particular client or set of clients based on the following validation criteria 
@@ -66,7 +67,7 @@ Here is the complex one where you can use logical operators like and/or/not cond
 
 <#else>
 
-  <#if ( ( user.hasRole("Administrators") != "" ) || user.hasGroup("Keycloak-Admins") )  >
+  <#if ( user.hasRole("Administrators") || user.hasGroup("Keycloak-Admins") )  >
 
     ${ user.set("allow_access", true)  } 
 
@@ -80,18 +81,18 @@ Here is the complex one where you can use logical operators like and/or/not cond
 
 # Available functions for validation
 
-You can use the following functions in your template for any custom validations.
+You can use the following functions in your template for designing your  validation criteria.
 
-##  Attributes
+##  Using attributes
 
 ### user.getAttributeValue
 
 ```
 Syntax:  user.getAttributeValue("<attribute_name>")
 
-It returns empty string if the attribute not found or null
+It returns empty string if the attribute is not defined or null
 
-Note: if the attribute value not found for the user then it fall back on to group level attributes.  
+Note: if the attribute value is not found for the user then it fall back on to group level attributes.  
 
 ```
 
@@ -101,14 +102,14 @@ Note: if the attribute value not found for the user then it fall back on to grou
 ```
 Syntax:  user.hasAttribute("<attribute_name>")
 
-It returns false if the attribute name not found.  It's good for checking an attribute is defined or not in the system.
+It returns false if the attribute name is not defined.  It's good for checking an attribute is defined or not in the system.   
 
-Note: if the attribute name not found for the user then it fall back on to group level attributes to continue verify.  
+Note: if the attribute name is not found for the user then it fall back on to group level attributes to continue verify.  
 
 ```
 
 
-##  Groups
+##  Using groups
 
 ### user.hasGroup
 
@@ -123,7 +124,7 @@ It returns false if the user who is attempting to login does not belong to the g
 
 ```
 
-##  Roles
+##  Using roles
 
 ### user.hasRole
 
@@ -133,11 +134,11 @@ Syntax:  user.hasGroup("<role_name>")
 
 It returns false if the user who is attempting to login has not been assigned to the role.  
  
-Note: if the role not found for the user then it fall back on to group level roles to continue verify.  
+Note: if the role is not found for the user then it fall back on to group level roles to continue verify.  
 ```
 
 
-##  Realm Client Parameters
+##  Using realm client parameters
 
 ### user.getClientId
 
@@ -209,25 +210,30 @@ Simply copy the JAR into `/opt/jboss/keycloak/standalone/deployments/`
 
 There are two scenarios to be validated 
 
-- step-1) First time login which means browser does not have access tokens but it needs to be validated
-- step-2) Already logged in with a client and has a valid access tokens available but other client needs to be validated before SSO triggers (SAML/OpenID)
+- Step-1) First time login which means browser does not have access tokens but it needs to be validated. 
+- Step-2) Already logged in with a client and has a valid access tokens available but other client needs to be validated before SSO triggers (SAML/OpenID)
+- Step-3) Finally, configuring the extenstions
 
-### Step-1
+### Step-1: Installation of "Codewrox - Cookie Client Auth Validation"
 - Clone the `Browser` authentication for example, "my-browser-flow"
 - Add a new execution, select "Codewrox - Cookie Client Auth Validation" first from the drop down
-- Important: Move this execution at the very top first row to have a first priorty and set to "Alternative" auth type
+- Important: Move this execution at the very top first row to have the first priorty and set to "Alternative" auth type
 - Disable the "Cookie" execution as you may see this in second row 
 - Now its the time to configure your newly added execution 
     - 
 
-
-### Step-2
-- Continue on the same setup with "my-browser-flow"
-- Locate  "my-browser-flow Forms" and select actions to add a new execution but this time you select "Codewrox - Client Auth Validation"  (do not select the step#1 item)
-- Important: Leave this execution at the very bottom row under the forms to have a last priorty and set to "Required" auth type
-- Now its the time to configure your newly added execution 
-
-- And finally,  do not forget to set this authentication flow in your client
+### Step-2 Installation of "Codewrox - Client Auth Validation"
+- Continue on the same setup with that example "my-browser-flow"
+- Locate  "My-browser-flow Forms" and select actions to add a new execution but this time you select "Codewrox - Client Auth Validation"  (do not select the one in step#1)
+- Important: Leave this execution at the very bottom under the forms to have the last priorty and set to "Required" auth type
+- That's all. 
+  
+### Step-3 Configuring the extenstions
+- With the newly added two execution flow, start configuring it with the template described above.
+- Mostly you would use the same criteria in both execution flow. Though, its a bit of duplicate here but that's how exetensions are designed in Keycloak and also our requirement need to tackle two different scenarios too as mentioned in the above steps.
+- And finally,  do not forget to set this new authentication flow in your client. (example: "my-browser-flow")
+- You can use one authentication flow for many different clients but if each client needs different validation criteria then you will have to create different authentication flow.
+  
 
 
 --------------------------------------------------------
