@@ -232,4 +232,4 @@ There are two scenarios to be validated
 
 --------------------------------------------------------
 Hire us for SSO integrations,  Keycloak deployments 
-and customizations : sbwari at codewrox.com
+and customizations : info(at)codewrox.com
