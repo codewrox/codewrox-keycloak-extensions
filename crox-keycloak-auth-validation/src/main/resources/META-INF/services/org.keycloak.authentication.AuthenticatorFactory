@@ -1,1 +1,2 @@
-com.codewrox.keycloak.auth.validation.ClientValidationAuthenticatorFactory
+com.codewrox.keycloak.auth.validation.ClientAuthValidationAuthenticatorFactory
+com.codewrox.keycloak.auth.validation.ClientAuthValidationCookieAuthenticatorFactory

@@ -7,25 +7,27 @@ import org.keycloak.models.AuthenticatorConfigModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
+import org.keycloak.sessions.AuthenticationSessionModel;
 
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 
-public class ClientValidationAuthenticator implements Authenticator {
+public class ClientAuthValidationAuthenticator implements Authenticator {
 
-    private static final Logger LOG = Logger.getLogger(ClientValidationAuthenticator.class);
+    private static final Logger LOG = Logger.getLogger(ClientAuthValidationAuthenticator.class);
 
     @Override
     public void authenticate(AuthenticationFlowContext context) {
-
         AuthenticatorConfigModel configModel = context.getAuthenticatorConfig();
-        String template = configModel.getConfig().get(ClientValidationAuthenticatorFactory.PROP_VALIDATION_TEMPLATE);
-        String redirect_url = configModel.getConfig().get(ClientValidationAuthenticatorFactory.PROP_REDIRECT_URL);
-        KCUserExtension userExtension = new UserExtension(context.getRealm(), context.getUser());
+        String template = configModel.getConfig().get(ClientAuthValidationAuthenticatorFactory.PROP_VALIDATION_TEMPLATE);
+        String redirect_url = configModel.getConfig().get(ClientAuthValidationAuthenticatorFactory.PROP_REDIRECT_URL);
+        AuthenticationSessionModel clientSession = context.getAuthenticationSession();
+        KCUserExtension userExtension = new UserExtension(context.getRealm(), context.getUser(), clientSession.getClient());
         AuthValidationTemplate authValidationTemplate = new AuthValidationTemplate();
         authValidationTemplate.render(template, userExtension);
+
         if (!userExtension.getAsBoolean("allow_access")) {
             LOG.debugf("Permission denied because of missing one or more pre auth conditions. Please contact administrator.");
             context.cancelLogin();
@@ -44,8 +46,11 @@ public class ClientValidationAuthenticator implements Authenticator {
     }
 
     @Override
-    public void action(AuthenticationFlowContext authenticationFlowContext) {
-
+    public void action(AuthenticationFlowContext context) {
+        if (context.getUser() == null) {
+            context.attempted();
+            return;
+        }
     }
 
 

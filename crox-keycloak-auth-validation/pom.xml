@@ -12,7 +12,7 @@
 
     <artifactId>crox-keycloak-auth-validation</artifactId>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
+
 
     <properties>
         <!-- general settings -->
@@ -50,6 +50,7 @@
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
             <version>2.3.30</version>
+
         </dependency>
     </dependencies>
 
@@ -62,11 +63,13 @@
                 <version>3.1.1</version>
 
                 <configuration>
-                    <outputDirectory>/Users/senthil/all-sources/codewrox/dev/keycloak/kcwork-11.0.2/standalone/deployments</outputDirectory>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
                     <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+
+                    </descriptorRefs>
+
                     <archive>
                         <!-- This is required since we need to add the jboss module references
                             to the resulting jar -->

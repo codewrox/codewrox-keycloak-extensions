@@ -2,10 +2,7 @@ package com.codewrox.keycloak.auth.validation;
 
 
 import org.jboss.logging.Logger;
-import org.keycloak.models.GroupModel;
-import org.keycloak.models.RealmModel;
-import org.keycloak.models.RoleModel;
-import org.keycloak.models.UserModel;
+import org.keycloak.models.*;
 import org.keycloak.models.utils.KeycloakModelUtils;
 import org.keycloak.models.utils.RoleUtils;
 
@@ -14,16 +11,17 @@ import java.util.Map;
 import java.util.Set;
 
 public class UserExtension implements KCUserExtension {
-    private static final Logger LOG = Logger.getLogger(ClientValidationAuthenticator.class);
+    private static final Logger LOG = Logger.getLogger(ClientAuthValidationAuthenticator.class);
 
     Map<String, Object> vars = new HashMap<>();
     private RealmModel realmModel;
     private UserModel userModel;
+    private ClientModel clientModel;
 
-    public UserExtension(RealmModel realmModel, UserModel userModel){
-
+    public UserExtension(RealmModel realmModel, UserModel userModel, ClientModel clientModel){
         this.realmModel = realmModel;
         this.userModel = userModel;
+        this.clientModel = clientModel;
     }
 
     public void set(String k, Object o){
@@ -43,8 +41,7 @@ public class UserExtension implements KCUserExtension {
 
     public Object get(String k){
         if (!vars.containsKey(k)) {
-            LOG.debug("value missing for key: " + k);
-            return "";
+            return ""; //forgivable and returns empty for unavailable keys
         }
         return vars.get(k);
     }
@@ -52,11 +49,36 @@ public class UserExtension implements KCUserExtension {
     public String getAttributeValue(String attributeName){
         String attrValue = KeycloakModelUtils.resolveFirstAttribute(userModel, attributeName);
         LOG.debugf("attr:%s , value: %s ", attributeName, attrValue);
-        return attrValue;
+        return emptyIt(attrValue);
+    }
+
+    @Override
+    public String getClientBaseUrl() {
+        return emptyIt(this.clientModel.getBaseUrl());
+    }
+
+    @Override
+    public String getClientRootUrl() {
+        return emptyIt(this.clientModel.getRootUrl());
+    }
+
+    @Override
+    public String getClientName() {
+        return emptyIt(this.clientModel.getName());
+    }
+
+    @Override
+    public String getClientId() {
+        return emptyIt(this.clientModel.getClientId());
     }
 
     public boolean hasAttribute(String attributeName){
-        return getAttributeValue(attributeName) != null;
+        String attrValue = KeycloakModelUtils.resolveFirstAttribute(userModel, attributeName);
+        return  (attrValue != null);
+    }
+
+    private String emptyIt(String inp){
+        return (inp==null)? "":  inp.trim();
     }
 
     @Override
@@ -71,5 +93,7 @@ public class UserExtension implements KCUserExtension {
         return (RoleUtils.hasRole(userModel.getRoleMappings(), role) ||
                 RoleUtils.hasRole(RoleUtils.getDeepUserRoleMappings(userModel), role));
     }
+
+
 
 }

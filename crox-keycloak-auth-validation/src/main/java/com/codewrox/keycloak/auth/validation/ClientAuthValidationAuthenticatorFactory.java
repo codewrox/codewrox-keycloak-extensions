@@ -11,13 +11,13 @@ import org.keycloak.provider.ProviderConfigProperty;
 import java.util.Arrays;
 import java.util.List;
 
-public class ClientValidationAuthenticatorFactory implements AuthenticatorFactory {
+public class ClientAuthValidationAuthenticatorFactory implements AuthenticatorFactory {
 
     public static final String PROP_VALIDATION_TEMPLATE = "validation_template";
     public static final String PROP_REDIRECT_URL = "redirect_url";
-    public static final ClientValidationAuthenticator clientValidator = new ClientValidationAuthenticator();
+    public static final ClientAuthValidationAuthenticator clientValidator = new ClientAuthValidationAuthenticator();
     public static final AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES = {
-            AuthenticationExecutionModel.Requirement.REQUIRED, AuthenticationExecutionModel.Requirement.DISABLED
+            AuthenticationExecutionModel.Requirement.REQUIRED, AuthenticationExecutionModel.Requirement.ALTERNATIVE, AuthenticationExecutionModel.Requirement.DISABLED
     };
     private static final String PROVIDER_ID = "codewrox-auth-validation";
 
